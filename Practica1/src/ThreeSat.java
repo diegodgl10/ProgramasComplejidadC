@@ -58,7 +58,7 @@ public class ThreeSat {
             }
         }
         
-        // Le asignamos un valor a cada variable con nd-chooise
+        // Le asignamos un valor a cada variable con nd-choice
         for (int i = 0; i < this.variables.size(); i++) {
             Variable var = new Variable(this.variables.get(i));
             if (ndChoice() == 1) {
