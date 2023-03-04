@@ -1,13 +1,11 @@
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Programa para resolver el problmea 3SAT y Reachability.
+ */
 public class Programa1 {
     public static void main(String[] args) {
-        //threeSat("(p,!q,r)(r,r,p)(s,!s,t)");
-        //threeSat("(p,p,p)(q,q,q)(!p,!p,!q)");
-        //threeSat("(p,p,p)");
-        //threeSat("(w,!x,!s)");
-
         String instrucciones = "" +
         "-t     para problmea 3Sat\n" +
         "-r     para problema de alcanzabilidad";
@@ -22,11 +20,14 @@ public class Programa1 {
             return;
         }
         if (args[0].equals("-r")) {
-            System.out.println("POR HACER");
+            Grafo grafo = generateGraph();
+            reachability(grafo);
+            System.out.println();
             return;
         }
     }
 
+    /* Genera una expresion booleana en FNC */
     private static List<Tripleta<Variable>> generateFNC() {
         String abc = "qwertyuiopasdfghjklzxcvbnm";
         String[] abcArray = abc.split("");
@@ -64,31 +65,55 @@ public class Programa1 {
         return clausulas;
     }
 
+    /* Genera una grafica con 10 <= |V| <= 20 */
+    private static Grafo generateGraph() {
+        String abc = "qwertyuiopasdfghjklzxcvbnm";
+        String[] abcArray = abc.split("");
+        ArrayList<String> literales = new ArrayList<String>();
+        int tamanio = (int) ((Math.random() * (20 - 10) + 10));
+        while (literales.size() < tamanio) {
+            int tomar = (int) ((Math.random() * (abcArray.length - 1)));
+            if (!literales.contains(abcArray[tomar])) {
+                literales.add(abcArray[tomar]);
+            }
+        }
+        List<Vertice> lVertices = new ArrayList<Vertice>();
+        List<Arista> lAristas = new ArrayList<Arista>();
+        for (String literal : literales) {
+            lVertices.add(new Vertice(literal));
+        }
+        Grafo grafo = new Grafo(lVertices, lAristas);
+        for (Vertice vertice : lVertices) {
+            int conecciones = (int) ((Math.random() * ((lVertices.size() -1) - 1) + 1));
+            while (conecciones != 0) {
+                int tomar = (int) ((Math.random() * (lVertices.size() - 2)));
+                if (!vertice.equals(lVertices.get(tomar))) {
+                    grafo.addArista(new Arista(vertice, lVertices.get(tomar)));
+                    conecciones--;
+                }
+            }
+        }
+        return grafo;
+    }
+
+    /* Ejecuta la solucion para el problema 3SAT. */
     private static void threeSat(List<Tripleta<Variable>> clausulas) {
         ThreeSat tSat = new ThreeSat();
         tSat.solucion(clausulas);
     }
 
-
-    private static void threeSat(String in) {
-        in = in.replace(" ", "");
-
-        String[] fnc = in.split("\\)\\(");
-        
-        fnc[0] = fnc[0].replace("(", "");
-        fnc[fnc.length - 1] = fnc[fnc.length - 1].replace(")", "");
-        
-        List<Tripleta<Variable>> clausulas = new ArrayList<Tripleta<Variable>>();
-        for (int i = 0; i < fnc.length; i++) {
-            String[] clausula = fnc[i].split(",");
-            Tripleta<Variable> tripleta = new Tripleta<Variable>(
-                new Variable(clausula[0]), 
-                new Variable(clausula[1]),
-                new Variable(clausula[2]));
-            clausulas.add (tripleta);
+    /* Ejecuta la solucion para el problema Reachability. */
+    private static void reachability(Grafo grafo) {
+        Reachability reachability = new Reachability();
+        List<Vertice> lVertices = grafo.getVertices();
+        int tomarS = 0;
+        int tomarT = 0;
+        while (tomarS == tomarT) {
+            tomarS = (int) ((Math.random() * grafo.getVertices().size() - 1));
+            tomarT = (int) ((Math.random() * grafo.getVertices().size() - 1));
         }
-        ThreeSat tSat = new ThreeSat();
-        
-        tSat.solucion(clausulas);
+        Vertice verticeS = lVertices.get(tomarS);
+        Vertice verticeT = lVertices.get(tomarT);
+        reachability.solucion(grafo, verticeS, verticeT);
     }
 }

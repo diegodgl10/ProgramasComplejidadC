@@ -239,10 +239,13 @@ public class Grafo {
             cadena += vertice.toString() + "\n";
         }
         */
-        cadena += "\nAristas:";
+        cadena += "\nAristas:  ";
+        cadena += this.lAristas.toString();
+        /*
         for (Arista arista : this.lAristas) {
             cadena += "\n" + arista.toString();   
         }
+        */
         return cadena;
     }
 }

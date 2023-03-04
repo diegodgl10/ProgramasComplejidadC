@@ -30,6 +30,7 @@ public class ThreeSat {
     /**
      * Regresa <code>True</code> si se encontro un conjunto de asignaciones
      * que satisfaga la expresion dada, en otro caso <code>False</code>
+     * @param clausulas expresion en FNC.
      * @return <code>True</code> si se encontro un conjunto de asignaciones
      * que satisfaga la expresion dada, en otro caso <code>False</code>
      */

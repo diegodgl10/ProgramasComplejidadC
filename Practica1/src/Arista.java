@@ -81,8 +81,12 @@ public class Arista {
      */
     @Override public String toString() {
         String cadena;
+        /*
         cadena = String.format("(%s, %s, P:%s)",
                 vertice1.toString(), vertice2.toString(), this.peso);
+        */
+        cadena = String.format("(%s, %s)",
+                this.vertice1.toString(), this.vertice2.toString());
         return cadena;
     }
 
