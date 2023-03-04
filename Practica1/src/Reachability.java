@@ -38,7 +38,6 @@ public class Reachability {
      */
     public boolean solucion(Grafo grafo, Vertice s, Vertice t) {
         this.grafo = grafo;
-        Grafo grafoAux = new Grafo(grafo);
         this.camino = new ArrayList<Vertice>();
 
         System.out.println("Ejemplar de Alcansabilidad: \n" + this.grafo);
@@ -47,7 +46,7 @@ public class Reachability {
 
         // Generamos una lista de vertices que conforman el camino con nd-choice 
         Vertice auxV = s;
-        grafoAux.setVerticeVisitado(auxV, true);
+        this.grafo.setVerticeVisitado(auxV, true);
         List<Vertice> disponibles = new ArrayList<Vertice>();
         this.camino.add(auxV);
         do {
@@ -63,7 +62,7 @@ public class Reachability {
                 int tomar = ndChoice(0, disponibles.size());
                 adyacente = disponibles.get(tomar);
                 auxV = adyacente;
-                grafoAux.setVerticeVisitado(auxV, true);
+                this.grafo.setVerticeVisitado(auxV, true);
                 this.camino.add(auxV);
             }
         } while (disponibles.size()-1 > 0);

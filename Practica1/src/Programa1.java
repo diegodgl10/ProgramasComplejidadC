@@ -71,6 +71,7 @@ public class Programa1 {
         String[] abcArray = abc.split("");
         ArrayList<String> literales = new ArrayList<String>();
         int tamanio = (int) ((Math.random() * (20 - 10) + 10));
+        tamanio = tamanio/2 + 2;
         while (literales.size() < tamanio) {
             int tomar = (int) ((Math.random() * (abcArray.length - 1)));
             if (!literales.contains(abcArray[tomar])) {
