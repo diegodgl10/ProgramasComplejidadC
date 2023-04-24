@@ -32,6 +32,7 @@ public class Pruebas {
     
     /**
      * Prueba numero 1
+     * @retunr una representacion en cadena la prueba 1
      */
     public String prueba1() {
         List<String> elemX;
@@ -79,6 +80,7 @@ public class Pruebas {
 
     /**
      * Prueba numero 2
+     * @retunr una representacion en cadena la prueba 2
      */
     public String prueba2() {
         List<String> elemX;
@@ -121,6 +123,7 @@ public class Pruebas {
 
     /**
      * Prueba numero 3
+     * @retunr una representacion en cadena la prueba 3
      */
     public String prueba3() {
         List<String> elemX;
@@ -168,6 +171,7 @@ public class Pruebas {
 
     /**
      * Prueba numero 4
+     * @retunr una representacion en cadena la prueba 4
      */
     public String prueba4() {
         List<String> elemX;
@@ -214,6 +218,7 @@ public class Pruebas {
 
     /**
      * Prueba numero 5
+     * @retunr una representacion en cadena la prueba 5
      */
     public String prueba5() {
         List<String> elemX;
