@@ -158,7 +158,7 @@ public class Conjunto<E> {
         String lista = this.elementos.toString();
         lista = lista.substring(1, lista.length()-1);
         lista = "{" + lista + "}";
-        return lista;
+        return this.nombre +" = "+ lista;
     }
 
     /**

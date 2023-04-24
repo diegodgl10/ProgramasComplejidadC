@@ -8,18 +8,25 @@ import java.util.Arrays;
  */
 public class Pruebas {
 
-    Conjunto<String> cjt1 = new Conjunto<String>("S1");
-    Conjunto<String> cjt2 = new Conjunto<String>("S2");
-    Conjunto<String> cjt3 = new Conjunto<String>("S3");
-    Conjunto<String> cjt4 = new Conjunto<String>("S4");
-    Conjunto<String> cjt5 = new Conjunto<String>("S5");
-    Conjunto<String> cjt6 = new Conjunto<String>("S6");
-    Conjunto<String> cjt7 = new Conjunto<String>("S7");
+    private Conjunto<String> cjt1 = new Conjunto<String>("S1");
+    private Conjunto<String> cjt2 = new Conjunto<String>("S2");
+    private Conjunto<String> cjt3 = new Conjunto<String>("S3");
+    private Conjunto<String> cjt4 = new Conjunto<String>("S4");
+    private Conjunto<String> cjt5 = new Conjunto<String>("S5");
+    private Conjunto<String> cjt6 = new Conjunto<String>("S6");
+    private Conjunto<String> cjt7 = new Conjunto<String>("S7");
 
-    Conjunto<String> cjtX = new Conjunto<String>("X");
-    Conjunto<Conjunto<String>> cjtF = new Conjunto<Conjunto<String>>("F");
+    private Conjunto<String> cjtX = new Conjunto<String>("X");
+    private Conjunto<Conjunto<String>> cjtF = new Conjunto<Conjunto<String>>("F");
 
-    SetCover setCover = new SetCover();
+    private SetCover setCover = new SetCover();
+
+    /**
+     * Constructor vacio.
+     */
+    public Pruebas() {
+
+    }
     
     /**
      * Prueba numero 1
@@ -49,6 +56,16 @@ public class Pruebas {
         elemF = new ArrayList<Conjunto<String>>(Arrays.asList(cjt1,cjt2,cjt3,cjt4,cjt5,cjt6));
         cjtF.setElementos(elemF);
 
-        setCover.setCover(cjtX, cjtF);
+
+        System.out.println(cjtX.toString());
+        System.out.println("F = {");
+        System.out.println("\t" + cjt1.toString());
+        System.out.println("\t" + cjt2.toString());
+        System.out.println("\t" + cjt3.toString());
+        System.out.println("\t" + cjt4.toString());
+        System.out.println("\t" + cjt5.toString());
+        System.out.println("\t" + cjt6.toString());
+        System.out.println("}");
+        System.out.println(setCover.setCover(cjtX, cjtF));
     }
 }
