@@ -8,6 +8,11 @@ import java.util.Arrays;
  * @author Zamora Cruz Diego Arturo.
  */
 public class SetCover {
+
+    /* Constructor vacio. */
+    public SetCover() {
+
+    }
     
     /**
      * Ejecuta el algoritmo de aproximacion Greedy para el problema Set Cover.
