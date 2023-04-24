@@ -172,7 +172,7 @@ public class Pruebas {
     public String prueba4() {
         List<String> elemX;
         elemX = new ArrayList<String>(Arrays.asList("1","2","3","4","5","6","7","8",
-        "9","10","11","12","13","14","15","16"));
+                "9","10","11","12","13","14","15","16"));
         cjtX.setElementos(elemX);
 
         List<String> elem1;
@@ -218,7 +218,7 @@ public class Pruebas {
     public String prueba5() {
         List<String> elemX;
         elemX = new ArrayList<String>(Arrays.asList("1","2","3","4","5","6","7","8",
-        "9","10","11","12","13","14","15","16"));
+                "9","10","11","12","13","14","15","16"));
         cjtX.setElementos(elemX);
 
         List<String> elem1;
@@ -241,7 +241,7 @@ public class Pruebas {
         cjt6.setElementos(elem6);
         List<String> elem7;
         elem7 = new ArrayList<String>(Arrays.asList("6","7","10","11"));
-        cjt6.setElementos(elem7);
+        cjt7.setElementos(elem7);
 
         List<Conjunto<String>> elemF;
         elemF = new ArrayList<Conjunto<String>>(Arrays.asList(cjt1,cjt2,cjt3,cjt4,cjt5,cjt6,cjt7));
