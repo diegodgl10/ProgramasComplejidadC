@@ -64,7 +64,7 @@ public class Pruebas {
         elemF = new ArrayList<Conjunto<String>>(Arrays.asList(cjt1,cjt2,cjt3,cjt4,cjt5,cjt6));
         cjtF.setElementos(elemF);
 
-        salida += cjtX.toString() + "\n";
+        salida = cjtX.toString() + "\n";
         salida += "F = {" + "\n";
         salida += "\t" + cjt1.toString() + "\n";
         salida += "\t" + cjt2.toString() + "\n";
@@ -108,7 +108,7 @@ public class Pruebas {
         elemF = new ArrayList<Conjunto<String>>(Arrays.asList(cjt1,cjt2,cjt3,cjt4,cjt5));
         cjtF.setElementos(elemF);
 
-        salida += cjtX.toString() + "\n";
+        salida = cjtX.toString() + "\n";
         salida += "F = {" + "\n";
         salida += "\t" + cjt1.toString() + "\n";
         salida += "\t" + cjt2.toString() + "\n";
@@ -154,7 +154,7 @@ public class Pruebas {
         elemF = new ArrayList<Conjunto<String>>(Arrays.asList(cjt1,cjt2,cjt3,cjt4,cjt5,cjt6));
         cjtF.setElementos(elemF);
 
-        salida += cjtX.toString() + "\n";
+        salida = cjtX.toString() + "\n";
         salida += "F = {" + "\n";
         salida += "\t" + cjt1.toString() + "\n";
         salida += "\t" + cjt2.toString() + "\n";
@@ -202,7 +202,7 @@ public class Pruebas {
         elemF = new ArrayList<Conjunto<String>>(Arrays.asList(cjt1,cjt2,cjt3,cjt4,cjt5,cjt6));
         cjtF.setElementos(elemF);
 
-        salida += cjtX.toString() + "\n";
+        salida = cjtX.toString() + "\n";
         salida += "F = {" + "\n";
         salida += "\t" + cjt1.toString() + "\n";
         salida += "\t" + cjt2.toString() + "\n";
@@ -252,7 +252,7 @@ public class Pruebas {
         elemF = new ArrayList<Conjunto<String>>(Arrays.asList(cjt1,cjt2,cjt3,cjt4,cjt5,cjt6,cjt7));
         cjtF.setElementos(elemF);
 
-        salida += cjtX.toString() + "\n";
+        salida = cjtX.toString() + "\n";
         salida += "F = {" + "\n";
         salida += "\t" + cjt1.toString() + "\n";
         salida += "\t" + cjt2.toString() + "\n";
