@@ -82,6 +82,18 @@ public class Tablero {
     }
 
     /**
+     * Regresa <code>True</code> si hay una reina en la posicion (x,y),
+     * <code>False</code> en otro caso.
+     * @param x la fila en la que se pregunta si hay reina.
+     * @param y la columna en la que se pregunta si hay reina.
+     * @return <code>True</code> si hay una reina en la posicion (x,y),
+     * <code>False</code> en otro caso.
+     */
+    public boolean hayReina(int x, int y) {
+        return this.tablero[x][y].equals(this.reina);
+    }
+
+    /**
      * Regresa <code>True</code> si colocal una nueva reina en la
      * posicion (x,y) no alcanza a ninguna otra, <code>False</code> en
      * otro caso.
@@ -91,7 +103,7 @@ public class Tablero {
      * posicion (x,y) no alcanza a ninguna otra, <code>False</code> en
      * otro caso.
      */
-    public boolean esDisponible(int x, int y) {
+    public boolean hayColisiones(int x, int y) {
         if (this.tablero[x][y].equals(this.reina)) {
             return true;
         }
