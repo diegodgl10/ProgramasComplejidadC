@@ -167,6 +167,27 @@ public class BusquedaTabu {
         return contador;
     }
 
+    /**
+     * Mueve una reina de la solicion (x1,y1) a (x1,y2) y
+     * la reina de la posicion (x2,y2) a (x2,y1).
+     * @param x1 la fila de la reina 1.
+     * @param y1 la columna de la reina 1.
+     * @param x2 la fila de la reina 2.
+     * @param y2 la columna de la reina 2.
+     */
+    public void intercambiarReina(int x1, int y1, int x2, int y2) {
+        this.tablero.removeReina(x1, y1);
+        this.tablero.removeReina(x2, y2);
+        this.tablero.putReina(x1, y2);
+        this.tablero.putReina(x2, y1);
+    }
+
+    /**
+     * Regresa una lista con los posibles intercambios de posiciones.
+     * @param x la fila de la reina para la que se le quieren calcular
+     * posibles intercambios.
+     * @return una lista con los posibles intercambios de posiciones.
+     */
     public List<Dupla<Integer>> generarIntercambios(int x) {
         List<Dupla<Integer>> intercambios = new ArrayList<Dupla<Integer>>();
         for (int i = x+1; i < this.tamanio; i++) {
