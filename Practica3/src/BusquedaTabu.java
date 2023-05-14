@@ -45,6 +45,7 @@ public class BusquedaTabu {
         this.tamanio = tablero.getTamanio();
         this.listaTabu = new Integer[tamanio][tamanio];
         this.maxiter = (int) (1.5 * this.tamanio) * 10;
+        this.posiciones = getPosiciones();
     }
 
     /* Genera un tablero colocando reinas en posiciones aleatorias. */
@@ -69,6 +70,17 @@ public class BusquedaTabu {
      */
     public Tablero getTablero() {
         return this.tablero;
+    }
+
+    public List<Integer> getPosiciones() {
+        for (int i = 0; i < this.tamanio; i++) {
+            for (int j = 0; j < this.tamanio; j++) {
+                if (this.tablero.hayReina(i, j)) {
+                    this.posiciones.set(i, j);
+                }
+            }
+        }
+        return this.posiciones;
     }
 
     /**
@@ -163,7 +175,7 @@ public class BusquedaTabu {
     @Override
     public String toString() {
         String tablero = this.tablero.toString();
-        String posiciones = this.posiciones.toString();
-        return tablero + "\n\n" + posiciones;
+        String posiciones = getPosiciones().toString();
+        return tablero + "\n" + posiciones;
     }
 }
