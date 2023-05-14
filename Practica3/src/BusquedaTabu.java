@@ -45,7 +45,7 @@ public class BusquedaTabu {
         this.tamanio = tablero.getTamanio();
         this.listaTabu = new Integer[tamanio][tamanio];
         this.maxiter = (int) (1.5 * this.tamanio) * 10;
-        this.posiciones = getPosiciones();
+        this.posiciones = obtenerPosiciones();
     }
 
     /* Genera un tablero colocando reinas en posiciones aleatorias. */
@@ -72,11 +72,12 @@ public class BusquedaTabu {
         return this.tablero;
     }
 
-    public List<Integer> getPosiciones() {
+    private List<Integer> obtenerPosiciones() {
+        this.posiciones = new ArrayList<Integer>();
         for (int i = 0; i < this.tamanio; i++) {
             for (int j = 0; j < this.tamanio; j++) {
                 if (this.tablero.hayReina(i, j)) {
-                    this.posiciones.set(i, j);
+                    this.posiciones.add(j);
                 }
             }
         }
@@ -122,8 +123,6 @@ public class BusquedaTabu {
                     int colDiagonalesIzq = colisonesDiagonalesIzq(i, j);
                     int colDiagonalesDer = colisonesDiagonalesDer(i, j);
 
-                    System.out.println(colVerticales+","+colDiagonalesIzq+","+colDiagonalesDer);
-
                     colisiones += colVerticales + colDiagonalesIzq + colDiagonalesDer;
                 }
             }
@@ -168,6 +167,14 @@ public class BusquedaTabu {
         return contador;
     }
 
+    public List<Dupla<Integer>> generarIntercambios(int x) {
+        List<Dupla<Integer>> intercambios = new ArrayList<Dupla<Integer>>();
+        for (int i = x+1; i < this.tamanio; i++) {
+            intercambios.add(new Dupla<Integer>(i,this.posiciones.get(i)));
+        }
+        return intercambios;
+    }
+
     /**
      * Regresa una representacion en cadena.
      * @return una representacion en cadena.
@@ -175,7 +182,7 @@ public class BusquedaTabu {
     @Override
     public String toString() {
         String tablero = this.tablero.toString();
-        String posiciones = getPosiciones().toString();
+        String posiciones = this.posiciones.toString();
         return tablero + "\n" + posiciones;
     }
 }

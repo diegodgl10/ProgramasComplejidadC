@@ -22,7 +22,8 @@ public class Programa3 {
         Tablero tab = tableroPruebas();
         System.out.println(tab.toString());
         BusquedaTabu bTabu = new BusquedaTabu(tab);
-        System.out.println(bTabu.contarColisiones());
+        //System.out.println(bTabu.contarColisiones());
+        bTabu.generarIntercambios(0);
 
         /*
         int tamanio = 7;
