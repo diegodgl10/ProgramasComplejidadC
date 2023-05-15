@@ -1,3 +1,4 @@
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -23,7 +24,12 @@ public class Programa3 {
         System.out.println(tab.toString());
         BusquedaTabu bTabu = new BusquedaTabu(tab);
         //System.out.println(bTabu.contarColisiones());
-        bTabu.generarIntercambios(0);
+        bTabu.solucion();
+        List<Tablero> soluciones = bTabu.getSoluciones();
+        for (int i = 0; i < soluciones.size(); i++) {
+            System.out.println(soluciones.get(i));
+        }
+        //System.out.println(bTabu.generarIntercambios(0).size());
 
         /*
         int tamanio = 7;

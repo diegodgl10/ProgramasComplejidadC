@@ -22,6 +22,9 @@ public class BusquedaTabu {
     /* Numero maximo de iteraciones. */
     private int maxiter;
 
+    /* Lista de soluciones encontradas. */
+    private List<Tablero> soluciones;
+
 
     /**
      * Constructor que rebice el tamnio de tablero que es igual
@@ -34,6 +37,7 @@ public class BusquedaTabu {
         generarTablero();
         this.listaTabu = new Integer[tamanio][tamanio];
         this.maxiter = (int) (1.5 * tamanio) * 10;
+        this.soluciones = new ArrayList<Tablero>();
     }
 
     /**
@@ -46,6 +50,7 @@ public class BusquedaTabu {
         this.listaTabu = new Integer[tamanio][tamanio];
         this.maxiter = (int) (1.5 * this.tamanio) * 10;
         this.posiciones = obtenerPosiciones();
+        this.soluciones = new ArrayList<Tablero>();
     }
 
     /* Genera un tablero colocando reinas en posiciones aleatorias. */
@@ -109,21 +114,28 @@ public class BusquedaTabu {
     }
 
     /**
-     * Regresa el numero de colisiones que existen
-     * con la configuracion actual.
-     * @return el numero de colisiones que existen
-     * con la configuracion actual.
+     * Regresa la lista con las soluciones encontradas.
+     * @return la lista con las soluciones encontradas.
      */
-    public int contarColisiones() {
+    public List<Tablero> getSoluciones() {
+        return this.soluciones;
+    }
+
+    /**
+     * Regresa el numero de colisiones que existen
+     * con la configuracion actual del tablero recibido.
+     * @param tablero, el tablero al sobre el que se realizara el conteo.
+     * @return el numero de colisiones que existen
+     * con la configuracion actual del tablero recibido.
+     */
+    public int contarColisiones(Tablero tablero) {
         int colisiones = 0;
         for (int i = 0; i < this.tamanio; i++) {
             for (int j = 0; j < this.tamanio; j++) {
-                if (this.tablero.hayReina(i, j)) {
-                    int colVerticales = colisonesVerticales(i, j);
-                    int colDiagonalesIzq = colisonesDiagonalesIzq(i, j);
-                    int colDiagonalesDer = colisonesDiagonalesDer(i, j);
-
-                    colisiones += colVerticales + colDiagonalesIzq + colDiagonalesDer;
+                if (tablero.hayReina(i, j)) {
+                    colisiones += colisonesVerticales(tablero, i, j);
+                    colisiones += colisonesDiagonalesIzq(tablero, i, j);
+                    colisiones += colisonesDiagonalesDer(tablero, i, j);
                 }
             }
         }
@@ -131,10 +143,10 @@ public class BusquedaTabu {
     }
 
     /* Colisiones vertiales. */
-    private int colisonesVerticales(int x, int y) {
+    private int colisonesVerticales(Tablero tablero, int x, int y) {
         int contador = 0;
         for (int i = x+1; i < this.tamanio; i++) {
-            if (this.tablero.hayReina(i, y)) {
+            if (tablero.hayReina(i, y)) {
                 contador++;
             }
         }
@@ -142,12 +154,12 @@ public class BusquedaTabu {
     }
 
     /* Colisiones diagonales del lado izquierdo. */
-    private int colisonesDiagonalesIzq(int x, int y) {
+    private int colisonesDiagonalesIzq(Tablero tablero, int x, int y) {
         int i = x+1;
         int j = y-1;
         int contador = 0;
         while (i < this.tamanio && j >= 0) {
-            if (this.tablero.hayReina(i++, j--)) {
+            if (tablero.hayReina(i++, j--)) {
                 contador++;
             }
         }
@@ -155,12 +167,12 @@ public class BusquedaTabu {
     }
     
     /* Colisiones diagonales del lado derecho. */
-    private int colisonesDiagonalesDer(int x, int y) {
+    private int colisonesDiagonalesDer(Tablero tablero, int x, int y) {
         int i = x+1;
         int j = y+1;
         int contador = 0;
         while (i < this.tamanio && j < this.tamanio) {
-            if (this.tablero.hayReina(i++, j++)) {
+            if (tablero.hayReina(i++, j++)) {
                 contador++;
             }
         }
@@ -169,17 +181,21 @@ public class BusquedaTabu {
 
     /**
      * Mueve una reina de la solicion (x1,y1) a (x1,y2) y
-     * la reina de la posicion (x2,y2) a (x2,y1).
+     * la reina de la posicion (x2,y2) a (x2,y1) y regresa el tablero
+     * con el intercambio realizado.
+     * @param tablero el tablero sobre el que se realizara el intercambio.
      * @param x1 la fila de la reina 1.
      * @param y1 la columna de la reina 1.
      * @param x2 la fila de la reina 2.
      * @param y2 la columna de la reina 2.
+     * @return el tablero con el intercambio realizado.
      */
-    public void intercambiarReina(int x1, int y1, int x2, int y2) {
-        this.tablero.removeReina(x1, y1);
-        this.tablero.removeReina(x2, y2);
-        this.tablero.putReina(x1, y2);
-        this.tablero.putReina(x2, y1);
+    public Tablero intercambiarReina(Tablero tablero, int x1, int y1, int x2, int y2) {
+        tablero.removeReina(x1, y1);
+        tablero.removeReina(x2, y2);
+        tablero.putReina(x1, y2);
+        tablero.putReina(x2, y1);
+        return tablero;
     }
 
     /**
@@ -194,6 +210,90 @@ public class BusquedaTabu {
             intercambios.add(new Dupla<Integer>(i,this.posiciones.get(i)));
         }
         return intercambios;
+    }
+
+    public void solucion() {
+        int funObjetivo = contarColisiones(this.tablero);
+        if (funObjetivo == 0) {
+            soluciones.add(new Tablero(this.tablero));
+        }
+        int sumatoria = (int) (this.tamanio * (this.tamanio + 1))/2;
+        Integer[][] candidatos = new Integer[sumatoria][4];
+        for (int iteracion = 0; iteracion < this.maxiter; iteracion++) {
+            for (int i = 0; i < this.tamanio; i++) {
+                List<Dupla<Integer>> intercambios = generarIntercambios(i);
+                for (Dupla<Integer> dupla : intercambios) {
+                    Tablero nuevoT = new Tablero(this.tablero);
+                    nuevoT = intercambiarReina(nuevoT, i, this.posiciones.get(i),
+                                dupla.getX(), dupla.getY());
+                    int colisiones = contarColisiones(nuevoT);
+                    candidatos = agregarCandidato(candidatos,
+                                dupla.getX(), dupla.getY(), colisiones, i);
+                }
+            }
+            for (int i = 0; i < this.tamanio; i++) {
+                for (int j = 0; j < this.tamanio; j++) {
+                    if (listaTabu[i][j] != null) {
+                        listaTabu[i][j] = listaTabu[i][j]-1;
+                    }
+                }
+            }
+            int i = 0;
+            while (i < sumatoria) {
+                if (listaTabu[candidatos[i][0]][candidatos[i][1]] == null ||
+                listaTabu[candidatos[i][0]][candidatos[i][1]] == 0) {
+                    listaTabu[candidatos[i][0]][candidatos[i][1]] = 3;
+                    break;   
+                }
+                i++;
+            }
+            int origenX = i;
+            int origenY = candidatos[i][3];
+            this.tablero = intercambiarReina(tablero, origenX, origenY,
+                            candidatos[i][0], candidatos[i][1]);
+            if (contarColisiones(this.tablero) == 0) {
+                this.soluciones.add(new Tablero(this.tablero));
+            }         
+        }
+    }
+
+    private Integer[][] agregarCandidato(Integer[][] candidatos, int x, int y,
+            int colisiones, int origen) {
+        int sumatoria = (int) (this.tamanio * (this.tamanio + 1))/2;
+        int posicion = -1;
+        for (int i = 0; i < sumatoria; i++) {
+            if (candidatos[i][0] == null) {
+                posicion = i;
+                break;
+            }
+            if (candidatos[i][2] > colisiones) {
+                posicion = i;
+                break;
+            }
+        }
+        if (posicion == -1) {
+            posicion = sumatoria-1;
+        }
+        Integer[][] nuevoCandidatos = new Integer[sumatoria][4];
+        for (int i = 0; i < posicion; i++) {
+            nuevoCandidatos[i][0] = candidatos[i][0];
+            nuevoCandidatos[i][1] = candidatos[i][1];
+            nuevoCandidatos[i][2] = candidatos[i][2];
+            nuevoCandidatos[i][3] = candidatos[i][3];
+        }
+        nuevoCandidatos[posicion][0] = x;
+        nuevoCandidatos[posicion][1] = y;
+        nuevoCandidatos[posicion][2] = colisiones;
+        nuevoCandidatos[posicion][3] = origen;
+        int i = posicion+1;
+        while (i < sumatoria && candidatos[i][0] != null) {
+            nuevoCandidatos[i][0] = candidatos[i][0];
+            nuevoCandidatos[i][1] = candidatos[i][1];
+            nuevoCandidatos[i][2] = candidatos[i][2];
+            nuevoCandidatos[i][3] = candidatos[i][3];
+            i++;
+        }
+        return nuevoCandidatos;
     }
 
     /**
