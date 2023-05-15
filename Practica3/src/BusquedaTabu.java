@@ -217,7 +217,7 @@ public class BusquedaTabu {
         if (funObjetivo == 0) {
             soluciones.add(new Tablero(this.tablero));
         }
-        int sumatoria = (int) (this.tamanio * (this.tamanio + 1))/2;
+        int sumatoria = (int) ((this.tamanio-1) * ((this.tamanio-1) + 1))/2;
         Integer[][] candidatos = new Integer[sumatoria][4];
         for (int iteracion = 0; iteracion < this.maxiter; iteracion++) {
             for (int i = 0; i < this.tamanio; i++) {
@@ -231,36 +231,51 @@ public class BusquedaTabu {
                                 dupla.getX(), dupla.getY(), colisiones, i);
                 }
             }
+            // Actualizamos el estado de uso
             for (int i = 0; i < this.tamanio; i++) {
                 for (int j = 0; j < this.tamanio; j++) {
-                    if (listaTabu[i][j] != null) {
-                        listaTabu[i][j] = listaTabu[i][j]-1;
+                    if (this.listaTabu[i][j] != null && this.listaTabu[i][j] > 0) {
+                        this.listaTabu[i][j] = this.listaTabu[i][j]-1;
                     }
                 }
             }
-            int i = 0;
-            while (i < sumatoria) {
-                if (listaTabu[candidatos[i][0]][candidatos[i][1]] == null ||
-                listaTabu[candidatos[i][0]][candidatos[i][1]] == 0) {
-                    listaTabu[candidatos[i][0]][candidatos[i][1]] = 3;
-                    break;   
+            int bandera = -1;
+            for (int i = 0; i < sumatoria; i++) {
+                bandera++;
+                if (this.listaTabu[candidatos[bandera][0]][candidatos[bandera][1]] == null ||
+                this.listaTabu[candidatos[bandera][0]][candidatos[bandera][1]] == 0) {
+                    this.listaTabu[candidatos[bandera][0]][candidatos[bandera][1]] = 3;
+                    break;
                 }
-                i++;
             }
-            int origenX = i;
-            int origenY = candidatos[i][3];
-            this.tablero = intercambiarReina(tablero, origenX, origenY,
-                            candidatos[i][0], candidatos[i][1]);
+
+            /*
+            for (int h = 0; h < sumatoria; h++) {
+                for (int j = 0; j < 4; j++) {
+                    System.out.print(candidatos[h][j] +" ");
+                }
+                System.out.println("");
+            }
+            */
+
+            int origenX = candidatos[bandera][3];
+            int origenY = this.posiciones.get(bandera);
+            this.tablero = intercambiarReina(this.tablero, origenX, origenY,
+                            candidatos[bandera][0], candidatos[bandera][1]);
+            System.out.println(origenX +","+ origenY +","+ candidatos[bandera][0] +","+ candidatos[bandera][1]);
+            System.out.println(this.tablero);
             if (contarColisiones(this.tablero) == 0) {
                 this.soluciones.add(new Tablero(this.tablero));
-            }         
+            }
+            this.posiciones = obtenerPosiciones();
         }
     }
 
     private Integer[][] agregarCandidato(Integer[][] candidatos, int x, int y,
             int colisiones, int origen) {
-        int sumatoria = (int) (this.tamanio * (this.tamanio + 1))/2;
+        int sumatoria = (int) ((this.tamanio-1) * ((this.tamanio-1) + 1))/2;
         int posicion = -1;
+        Integer[][] nuevoCandidatos = new Integer[sumatoria][4];
         for (int i = 0; i < sumatoria; i++) {
             if (candidatos[i][0] == null) {
                 posicion = i;
@@ -273,25 +288,28 @@ public class BusquedaTabu {
         }
         if (posicion == -1) {
             posicion = sumatoria-1;
+
         }
-        Integer[][] nuevoCandidatos = new Integer[sumatoria][4];
         for (int i = 0; i < posicion; i++) {
             nuevoCandidatos[i][0] = candidatos[i][0];
             nuevoCandidatos[i][1] = candidatos[i][1];
             nuevoCandidatos[i][2] = candidatos[i][2];
             nuevoCandidatos[i][3] = candidatos[i][3];
         }
+
         nuevoCandidatos[posicion][0] = x;
         nuevoCandidatos[posicion][1] = y;
         nuevoCandidatos[posicion][2] = colisiones;
         nuevoCandidatos[posicion][3] = origen;
-        int i = posicion+1;
-        while (i < sumatoria && candidatos[i][0] != null) {
-            nuevoCandidatos[i][0] = candidatos[i][0];
-            nuevoCandidatos[i][1] = candidatos[i][1];
-            nuevoCandidatos[i][2] = candidatos[i][2];
-            nuevoCandidatos[i][3] = candidatos[i][3];
-            i++;
+        
+        //int i = posicion+1;
+        posicion++;
+        while (posicion < sumatoria) {
+            nuevoCandidatos[posicion][0] = candidatos[posicion-1][0];
+            nuevoCandidatos[posicion][1] = candidatos[posicion-1][1];
+            nuevoCandidatos[posicion][2] = candidatos[posicion-1][2];
+            nuevoCandidatos[posicion][3] = candidatos[posicion-1][3];
+            posicion++;
         }
         return nuevoCandidatos;
     }
