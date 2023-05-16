@@ -1,6 +1,11 @@
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Clase para resolver el problema de las n-reinas usando la estrategia
+ * de la metaurista Simulated Annealing.
+ * @author Zamora Cruz Diego Arturo
+ */
 public class SimulatedAnnealing {
 
     /* Tamanio del tablero que es igual numero de reinas. */
@@ -8,6 +13,9 @@ public class SimulatedAnnealing {
 
     /* Lista con las posiciones en el tablero. */
     private List<Integer> posiciones;
+
+    /* Numero de iteraciones. */
+    private int iteraciones = 0;
 
     /**
      * Constructor que rebice el tamnio de tablero que es igual
@@ -35,8 +43,13 @@ public class SimulatedAnnealing {
     }
 
 
-    /* Genera un tablero colocando reinas en posiciones aleatorias. */
-    private List<Integer> generarTablero() {
+    /**
+     * Regresa una lista con las posiciones de las reinas
+     * que representan un tablero aleatorio.
+     * @return una lista con las posiciones de las reinas
+     * que representan un tablero aleatorio. 
+     */
+    public List<Integer> generarTablero() {
         List<Integer> posiciones = new ArrayList<Integer>();
         posiciones = new ArrayList<Integer>();
         while (posiciones.size() < this.tamanio) {
@@ -135,11 +148,18 @@ public class SimulatedAnnealing {
     }
 
 
-    public List<Integer> simulatedAnnealing() {
-        List<Integer> posiciones = generarTablero();
+    /**
+     * Regresa una lista con las posiciones de las reinas despues
+     * de aplicar el algoritmos de la metauristica Simulated Annealing.
+     * @return una lista con las posiciones de las reinas despues
+     * de aplicar el algoritmos de la metauristica Simulated Annealing.
+     */
+    public List<Integer> simulatedAnnealing(List<Integer> posiciones) {
         double temperatura = 1000;
         double enfriamiento = 0.95;
+        this.iteraciones = 0;
         while (temperatura > 0.1) {
+            this.iteraciones++;
             List<Integer> vecino = vecino(posiciones);
             int colisiones = contarColisiones(toTablero(posiciones));
             int nuevasColisiones = contarColisiones(toTablero(vecino));
@@ -150,5 +170,13 @@ public class SimulatedAnnealing {
             temperatura = temperatura * enfriamiento;
         }
         return posiciones;
+    }
+
+    /**
+     * Regresa el numero de iteraciones.
+     * @return el numero de iteraciones.
+     */
+    public int getIteraciones() {
+        return this.iteraciones;
     }
 }
