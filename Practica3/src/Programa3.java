@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -18,8 +19,7 @@ public class Programa3 {
         return tab;
     }
 
-    public static void main(String[] args) {
-        //ejecucionPrograma();
+    public static void pruebasTabu() {
         Tablero tab = tableroPruebas();
         System.out.println(tab.toString());
         BusquedaTabu bTabu = new BusquedaTabu(tab);
@@ -39,6 +39,25 @@ public class Programa3 {
             System.out.println(tabu.toString() + "\n\n\n");
         }
         */
+    }
+
+    public static void main(String[] args) {
+        List<Integer> posiciones = new ArrayList<Integer>();
+        posiciones = new ArrayList<Integer>();
+        while (posiciones.size() < 7) {
+            int generado = (int) ((Math.random() * 7));
+            if (!posiciones.contains(generado)) {
+                posiciones.add(generado);
+            }
+        }
+        System.out.println(posiciones);
+        List<Integer> posiciones2 = new ArrayList<Integer>(posiciones);
+        System.out.println(posiciones2);
+        posiciones.set(0, -1);
+        System.out.println(posiciones);
+        System.out.println(posiciones2);
+
+        
     }
 
     public static void ejecucionPrograma() {
