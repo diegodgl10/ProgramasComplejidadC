@@ -10,9 +10,6 @@ public class BusquedaTabu {
     /* Tamanio del tablero que es igual numero de reinas. */
     private int tamanio;
 
-    /* Tablero. */
-    private Tablero tablero;
-
     /* Lista con las posiciones en el tablero. */
     private List<Integer> posiciones;
 
@@ -23,7 +20,7 @@ public class BusquedaTabu {
     private int maxiter;
 
     /* Lista de soluciones encontradas. */
-    private List<Tablero> soluciones;
+    private List<List<Integer>> soluciones;
 
 
     /**
@@ -34,10 +31,9 @@ public class BusquedaTabu {
      */
     public BusquedaTabu(int tamanio) {
         this.tamanio = tamanio;
-        generarTablero();
         this.listaTabu = new Integer[tamanio][tamanio];
         this.maxiter = (int) (1.5 * tamanio) * 10;
-        this.soluciones = new ArrayList<Tablero>();
+        this.soluciones = new ArrayList<List<Integer>>();
     }
 
     /**
@@ -45,48 +41,35 @@ public class BusquedaTabu {
      * @param tablero el tablero para la busqueda tabu.
      */
     public BusquedaTabu(Tablero tablero) {
-        this.tablero = tablero;
         this.tamanio = tablero.getTamanio();
-        this.listaTabu = new Integer[tamanio][tamanio];
-        this.maxiter = (int) (1.5 * this.tamanio) * 10;
-        this.posiciones = obtenerPosiciones();
-        this.soluciones = new ArrayList<Tablero>();
-    }
-
-    /* Genera un tablero colocando reinas en posiciones aleatorias. */
-    private void generarTablero() {
-        this.tablero = new Tablero(this.tamanio);
-        this.posiciones = new ArrayList<Integer>();
-        while (this.posiciones.size() < this.tamanio) {
-            int generado = (int) ((Math.random() * this.tamanio));
-            if (!this.posiciones.contains(generado)) {
-                this.posiciones.add(generado);
-            }
-        }
-        for (int x = 0; x < this.posiciones.size(); x++) {
-            int y = this.posiciones.get(x);
-            this.tablero.putReina(x, y);
-        }
-    }
-
-    /**
-     * Regresa el tablero.
-     * @return el tablero.
-     */
-    public Tablero getTablero() {
-        return this.tablero;
-    }
-
-    private List<Integer> obtenerPosiciones() {
-        this.posiciones = new ArrayList<Integer>();
         for (int i = 0; i < this.tamanio; i++) {
             for (int j = 0; j < this.tamanio; j++) {
-                if (this.tablero.hayReina(i, j)) {
+                if (tablero.hayReina(i, j)) {
                     this.posiciones.add(j);
                 }
             }
         }
-        return this.posiciones;
+        this.listaTabu = new Integer[this.tamanio][this.tamanio];
+        this.maxiter = (int) (1.5 * this.tamanio) * 10;
+        this.soluciones = new ArrayList<List<Integer>>();
+    }
+
+    /**
+     * Regresa una lista con las posiciones de las reinas
+     * que representan un tablero aleatorio.
+     * @return una lista con las posiciones de las reinas
+     * que representan un tablero aleatorio. 
+     */
+    public List<Integer> generarTablero() {
+        List<Integer> posiciones = new ArrayList<Integer>();
+        posiciones = new ArrayList<Integer>();
+        while (posiciones.size() < this.tamanio) {
+            int generado = (int) ((Math.random() * this.tamanio));
+            if (!posiciones.contains(generado)) {
+                posiciones.add(generado);
+            }
+        }
+        return posiciones;
     }
 
     /**
@@ -117,7 +100,7 @@ public class BusquedaTabu {
      * Regresa la lista con las soluciones encontradas.
      * @return la lista con las soluciones encontradas.
      */
-    public List<Tablero> getSoluciones() {
+    public List<List<Integer>> getSoluciones() {
         return this.soluciones;
     }
 
@@ -180,21 +163,15 @@ public class BusquedaTabu {
     }
 
     /**
-     * Mueve una reina de la solicion (x1,y1) a (x1,y2) y
-     * la reina de la posicion (x2,y2) a (x2,y1) y regresa el tablero
-     * con el intercambio realizado.
-     * @param tablero el tablero sobre el que se realizara el intercambio.
-     * @param x1 la fila de la reina 1.
-     * @param y1 la columna de la reina 1.
-     * @param x2 la fila de la reina 2.
-     * @param y2 la columna de la reina 2.
-     * @return el tablero con el intercambio realizado.
+     * Regresa la transformacion de una lista de posiciones a un tablero.
+     * @param posiciones la lista de posiciones.
+     * @return la transformacion de una lista de posiciones a un tablero.
      */
-    public Tablero intercambiarReina(Tablero tablero, int x1, int y1, int x2, int y2) {
-        tablero.removeReina(x1, y1);
-        tablero.removeReina(x2, y2);
-        tablero.putReina(x1, y2);
-        tablero.putReina(x2, y1);
+    public Tablero toTablero(List<Integer> posiciones) {
+        Tablero tablero = new Tablero(posiciones.size());
+        for (int i = 0; i < posiciones.size(); i++) {
+            tablero.putReina(i, posiciones.get(i));
+        }
         return tablero;
     }
 
@@ -204,31 +181,39 @@ public class BusquedaTabu {
      * posibles intercambios.
      * @return una lista con los posibles intercambios de posiciones.
      */
-    public List<Dupla<Integer>> generarIntercambios(int x) {
+    public List<Dupla<Integer>> generarIntercambios(int x, List<Integer> posiciones) {
         List<Dupla<Integer>> intercambios = new ArrayList<Dupla<Integer>>();
         for (int i = x+1; i < this.tamanio; i++) {
-            intercambios.add(new Dupla<Integer>(i,this.posiciones.get(i)));
+            intercambios.add(new Dupla<Integer>(i, posiciones.get(i)));
         }
         return intercambios;
     }
 
-    public void solucion() {
-        int funObjetivo = contarColisiones(this.tablero);
+    /**
+     * Regresa una lista con las posiciones de las reinas despues
+     * de aplicar el algoritmos de la metauristica Busqueda Tabu.
+     * @return una lista con las posiciones de las reinas despues
+     * de aplicar el algoritmos de la metauristica Busqueda Tabu.
+     */
+    public List<Integer> busquedaTabu(List<Integer> posiciones) {
+        int funObjetivo = contarColisiones(toTablero(posiciones));
+        List<Integer> salida = posiciones;
         if (funObjetivo == 0) {
-            soluciones.add(new Tablero(this.tablero));
+            soluciones.add(posiciones);
         }
         int sumatoria = (int) ((this.tamanio-1) * ((this.tamanio-1) + 1))/2;
         Integer[][] candidatos = new Integer[sumatoria][4];
         for (int iteracion = 0; iteracion < this.maxiter; iteracion++) {
             for (int i = 0; i < this.tamanio; i++) {
-                List<Dupla<Integer>> intercambios = generarIntercambios(i);
+                List<Dupla<Integer>> intercambios = generarIntercambios(i, posiciones);
                 for (Dupla<Integer> dupla : intercambios) {
-                    Tablero nuevoT = new Tablero(this.tablero);
-                    nuevoT = intercambiarReina(nuevoT, i, this.posiciones.get(i),
-                                dupla.getX(), dupla.getY());
-                    int colisiones = contarColisiones(nuevoT);
+                    List<Integer> nuevasPos = new ArrayList<Integer>(posiciones);
+                    int aux = nuevasPos.get(i);
+                    nuevasPos.set(i, dupla.getY());
+                    nuevasPos.set(dupla.getX(), aux);
+                    int colisiones = contarColisiones(toTablero(nuevasPos));
                     candidatos = agregarCandidato(candidatos,
-                                dupla.getX(), dupla.getY(), colisiones, i);
+                                    dupla.getX(), dupla.getY(), colisiones, i);
                 }
             }
             // Actualizamos el estado de uso
@@ -239,6 +224,7 @@ public class BusquedaTabu {
                     }
                 }
             }
+            // Buscamos el mas optimo que no haya sido usado en 3 iteraciones
             int bandera = -1;
             for (int i = 0; i < sumatoria; i++) {
                 bandera++;
@@ -248,29 +234,25 @@ public class BusquedaTabu {
                     break;
                 }
             }
-
-            /*
-            for (int h = 0; h < sumatoria; h++) {
-                for (int j = 0; j < 4; j++) {
-                    System.out.print(candidatos[h][j] +" ");
-                }
-                System.out.println("");
-            }
-            */
-
             int origenX = candidatos[bandera][3];
-            int origenY = this.posiciones.get(bandera);
-            this.tablero = intercambiarReina(this.tablero, origenX, origenY,
-                            candidatos[bandera][0], candidatos[bandera][1]);
-            System.out.println(origenX +","+ origenY +","+ candidatos[bandera][0] +","+ candidatos[bandera][1]);
-            System.out.println(this.tablero);
-            if (contarColisiones(this.tablero) == 0) {
-                this.soluciones.add(new Tablero(this.tablero));
+            int origenY = posiciones.get(bandera);
+            List<Integer> nuevasPos = new ArrayList<Integer>(posiciones);
+            nuevasPos.set(origenX, candidatos[bandera][1]);
+            nuevasPos.set(candidatos[bandera][0], origenY);
+            posiciones = nuevasPos;
+            if (contarColisiones(toTablero(nuevasPos)) == 0 &&
+                    !this.soluciones.contains(nuevasPos)) {
+                this.soluciones.add(posiciones);
             }
-            this.posiciones = obtenerPosiciones();
+            if (contarColisiones(toTablero(nuevasPos)) <= funObjetivo) {
+                funObjetivo = contarColisiones(toTablero(nuevasPos));
+                salida = nuevasPos;
+            }
         }
+        return salida;
     }
 
+    /* Agrega un candidato de forma ordenada al arreglo de candidatos. */
     private Integer[][] agregarCandidato(Integer[][] candidatos, int x, int y,
             int colisiones, int origen) {
         int sumatoria = (int) ((this.tamanio-1) * ((this.tamanio-1) + 1))/2;
@@ -312,16 +294,5 @@ public class BusquedaTabu {
             posicion++;
         }
         return nuevoCandidatos;
-    }
-
-    /**
-     * Regresa una representacion en cadena.
-     * @return una representacion en cadena.
-     */
-    @Override
-    public String toString() {
-        String tablero = this.tablero.toString();
-        String posiciones = this.posiciones.toString();
-        return tablero + "\n" + posiciones;
     }
 }

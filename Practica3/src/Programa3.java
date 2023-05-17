@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+// import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -7,6 +7,7 @@ import java.util.Scanner;
  */
 public class Programa3 {
 
+    /* Metodo para crear un tablero de pruebas. */
     public static Tablero tableroPruebas() {
         Tablero tab = new Tablero(7);
         tab.putReina(0, 3);
@@ -17,28 +18,6 @@ public class Programa3 {
         tab.putReina(5, 0);
         tab.putReina(6, 1);
         return tab;
-    }
-
-    public static void pruebasTabu() {
-        Tablero tab = tableroPruebas();
-        System.out.println(tab.toString());
-        BusquedaTabu bTabu = new BusquedaTabu(tab);
-        //System.out.println(bTabu.contarColisiones());
-        bTabu.solucion();
-        List<Tablero> soluciones = bTabu.getSoluciones();
-        for (int i = 0; i < soluciones.size(); i++) {
-            System.out.println(soluciones.get(i));
-        }
-        //System.out.println(bTabu.generarIntercambios(0).size());
-
-        /*
-        int tamanio = 7;
-        BusquedaTabu tabu;
-        for (int i = 0; i < tamanio; i++) {
-            tabu = new BusquedaTabu(tamanio);
-            System.out.println(tabu.toString() + "\n\n\n");
-        }
-        */
     }
 
     public static void main(String[] args) {
@@ -80,19 +59,44 @@ public class Programa3 {
 
     /* Solucion haciendo uso de Busqueda Tabu. */
     private static void solucionBusquedaTabu(int tamanio) {
-        
+        BusquedaTabu busquedaTabu = new BusquedaTabu(tamanio);
+        String estado;
+        List<Integer> inicio = busquedaTabu.generarTablero();
+        Tablero tabInicio = busquedaTabu.toTablero(inicio);
+        estado = "\nTablero inicial:\n" + tabInicio.toString();
+        estado += "\nColisiones: " + busquedaTabu.contarColisiones(tabInicio);
+        System.out.println(estado);
+        List<Integer> fin = busquedaTabu.busquedaTabu(inicio);        
+        Tablero tabFin = busquedaTabu.toTablero(fin);
+        estado = "\nTablero final:\n" + tabFin.toString();
+        estado += "\nColisiones: " + busquedaTabu.contarColisiones(tabFin);
+        estado += "\nIteraciones: " + busquedaTabu.getMaxiter();
+        System.out.println(estado);
+        List<List<Integer>> soluciones = busquedaTabu.getSoluciones();
+        if (soluciones.size() > 0) {
+            System.out.println("Soluciones exactas");
+        }
+        for (int i = 0; i < soluciones.size(); i++) {
+            System.out.println("Solucion " + (i+1));
+            Tablero tabTemp = busquedaTabu.toTablero(soluciones.get(i));
+            System.out.println(tabTemp.toString());
+        }
     }
     
     /* Solucion haciendo uso de Simulated Annealing. */
     private static void solucionSimulatedAnnealing(int tamanio) {
-        SimulatedAnnealing sA = new SimulatedAnnealing(tamanio);
-        List<Integer> inicio = sA.generarTablero();
-        Tablero tabInicio = sA.toTablero(inicio);
-        String estado = "\nTablero inicial:\n" + tabInicio.toString();
+        SimulatedAnnealing simulatedAnnealing = new SimulatedAnnealing(tamanio);
+        String estado;
+        List<Integer> inicio = simulatedAnnealing.generarTablero();
+        Tablero tabInicio = simulatedAnnealing.toTablero(inicio);
+        estado = "\nTablero inicial:\n" + tabInicio.toString();
+        estado += "\nColisiones: " + simulatedAnnealing.contarColisiones(tabInicio);
         System.out.println(estado);
-        List<Integer> fin = sA.simulatedAnnealing(inicio);
-        Tablero tabFin = sA.toTablero(fin);
+        List<Integer> fin = simulatedAnnealing.simulatedAnnealing(inicio);
+        Tablero tabFin = simulatedAnnealing.toTablero(fin);
         estado = "\nTablero final:\n" + tabFin.toString();
+        estado += "\nColisiones: " + simulatedAnnealing.contarColisiones(tabFin);
+        estado += "\nIteraciones: " + simulatedAnnealing.getIteraciones();
         System.out.println(estado);
         //estado = "Iteraciones:" + sA.getIteraciones();
         //System.out.println(estado);
