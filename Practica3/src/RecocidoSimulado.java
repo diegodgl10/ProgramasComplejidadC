@@ -3,10 +3,10 @@ import java.util.List;
 
 /**
  * Clase para resolver el problema de las n-reinas usando la estrategia
- * de la metaurista Simulated Annealing.
+ * de la metaurista Recocido Simulado.
  * @author Zamora Cruz Diego Arturo
  */
-public class SimulatedAnnealing {
+public class RecocidoSimulado {
 
     /* Tamanio del tablero que es igual numero de reinas. */
     private int tamanio;
@@ -23,7 +23,7 @@ public class SimulatedAnnealing {
      * @param tamanio el tamanio del tablero que es igual
      * al numero de rainas.
      */
-    public SimulatedAnnealing(int tamanio) {
+    public RecocidoSimulado(int tamanio) {
         this.tamanio = tamanio;
     }
 
@@ -31,7 +31,7 @@ public class SimulatedAnnealing {
      * El tablero para la busqueda tabu.
      * @param tablero el tablero para la busqueda tabu.
      */
-    public SimulatedAnnealing(Tablero tablero) {
+    public RecocidoSimulado(Tablero tablero) {
         this.tamanio = tablero.getTamanio();
         for (int i = 0; i < this.tamanio; i++) {
             for (int j = 0; j < this.tamanio; j++) {
@@ -150,11 +150,11 @@ public class SimulatedAnnealing {
 
     /**
      * Regresa una lista con las posiciones de las reinas despues
-     * de aplicar el algoritmos de la metauristica Simulated Annealing.
+     * de aplicar el algoritmos de la metauristica Recocido Simulado.
      * @return una lista con las posiciones de las reinas despues
-     * de aplicar el algoritmos de la metauristica Simulated Annealing.
+     * de aplicar el algoritmos de la metauristica Recocido Simulado.
      */
-    public List<Integer> simulatedAnnealing(List<Integer> posiciones) {
+    public List<Integer> recocidoSimulado(List<Integer> posiciones) {
         double temperatura = 1000;
         double enfriamiento = 0.95;
         this.iteraciones = 0;

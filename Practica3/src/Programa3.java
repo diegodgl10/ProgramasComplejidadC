@@ -29,7 +29,7 @@ public class Programa3 {
         Scanner sc = new Scanner(System.in);
         String entrada;
         System.out.println("1 Busqueda Tabu");
-        System.out.println("2 Simulated Annealing");
+        System.out.println("2 Recocido Simulado");
         System.out.println("0 Salir");
         System.out.print("> ");
         entrada = sc.nextLine();
@@ -52,7 +52,7 @@ public class Programa3 {
         if (algoritmo == 1) {
             solucionBusquedaTabu(tamanio);
         } else {
-            solucionSimulatedAnnealing(tamanio);
+            solucionRecocidoSimulado(tamanio);
         }
         sc.close();
     }
@@ -83,20 +83,20 @@ public class Programa3 {
         }
     }
     
-    /* Solucion haciendo uso de Simulated Annealing. */
-    private static void solucionSimulatedAnnealing(int tamanio) {
-        SimulatedAnnealing simulatedAnnealing = new SimulatedAnnealing(tamanio);
+    /* Solucion haciendo uso de Recocido Simulado. */
+    private static void solucionRecocidoSimulado(int tamanio) {
+        RecocidoSimulado recocidoSimulado = new RecocidoSimulado(tamanio);
         String estado;
-        List<Integer> inicio = simulatedAnnealing.generarTablero();
-        Tablero tabInicio = simulatedAnnealing.toTablero(inicio);
+        List<Integer> inicio = recocidoSimulado.generarTablero();
+        Tablero tabInicio = recocidoSimulado.toTablero(inicio);
         estado = "\nTablero inicial:\n" + tabInicio.toString();
-        estado += "\nColisiones: " + simulatedAnnealing.contarColisiones(tabInicio);
+        estado += "\nColisiones: " + recocidoSimulado.contarColisiones(tabInicio);
         System.out.println(estado);
-        List<Integer> fin = simulatedAnnealing.simulatedAnnealing(inicio);
-        Tablero tabFin = simulatedAnnealing.toTablero(fin);
+        List<Integer> fin = recocidoSimulado.recocidoSimulado(inicio);
+        Tablero tabFin = recocidoSimulado.toTablero(fin);
         estado = "\nTablero final:\n" + tabFin.toString();
-        estado += "\nColisiones: " + simulatedAnnealing.contarColisiones(tabFin);
-        estado += "\nIteraciones: " + simulatedAnnealing.getIteraciones();
+        estado += "\nColisiones: " + recocidoSimulado.contarColisiones(tabFin);
+        estado += "\nIteraciones: " + recocidoSimulado.getIteraciones();
         System.out.println(estado);
         //estado = "Iteraciones:" + sA.getIteraciones();
         //System.out.println(estado);
