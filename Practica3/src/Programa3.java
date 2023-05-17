@@ -70,7 +70,7 @@ public class Programa3 {
         Tablero tabFin = busquedaTabu.toTablero(fin);
         estado = "\nTablero final:\n" + tabFin.toString();
         estado += "\nColisiones: " + busquedaTabu.contarColisiones(tabFin);
-        estado += "\nIteraciones: " + busquedaTabu.getMaxiter();
+        //estado += "\nIteraciones: " + busquedaTabu.getMaxiter();
         System.out.println(estado);
         List<List<Integer>> soluciones = busquedaTabu.getSoluciones();
         if (soluciones.size() > 0) {
@@ -96,7 +96,7 @@ public class Programa3 {
         Tablero tabFin = recocidoSimulado.toTablero(fin);
         estado = "\nTablero final:\n" + tabFin.toString();
         estado += "\nColisiones: " + recocidoSimulado.contarColisiones(tabFin);
-        estado += "\nIteraciones: " + recocidoSimulado.getIteraciones();
+        //estado += "\nIteraciones: " + recocidoSimulado.getIteraciones();
         System.out.println(estado);
         //estado = "Iteraciones:" + sA.getIteraciones();
         //System.out.println(estado);
